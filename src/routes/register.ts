@@ -1,12 +1,16 @@
 import express from 'express'
 import * as userServices from '../services/userServices'
-
+import {registerUser} from '../controllers/user'
+import {NewUser, Validation} from '../types'
 const router = express.Router()
 
-router.post('/', (req, res) =>{
+router.post('/', async (req, res) =>{
+const registered:Validation = await userServices.addUser(req.body)
 
-const registered = userServices.addUser(req.body)
-//
-res.send(registered)
+if(registered === 'Success'){
+res.status(200).json({msg: 'usuario creado satisfactoriamente'})
+}
+else
+res.json({err:'Error usuario ya existe '})
 })
 export default router

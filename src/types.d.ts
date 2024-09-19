@@ -3,12 +3,12 @@ export interface User{
     username: string,
     password: string,
     email: string,
-    personalInfo:{
-        name?:string,
-        lastname?:string,
-        age:number,
-        bio?:string
-    }
+    name?:string,
+    lastname?:string,
+    age:number,
+    bio?:string
 }
 
 export type NewUser = Omit<User,'id'>
+
+export type Validation = 'Error' | 'Success'

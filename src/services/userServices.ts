@@ -1,32 +1,16 @@
 import express from 'express'
-import {User,NewUser} from '../types'
+import {User,NewUser, Validation} from '../types'
+import {registerUser, getUserByName} from '../controllers/user'
 
-export const addUser = (user:any):User =>{
-    const {name,lastname,age, email, username,password} = user
-    const newUser:User = { //cambiamos por el tipo NewUser
-        username:username,
-        password:password,
-        email:email,
-        personalInfo:{
-            name:name,
-            lastname:lastname,
-            age:age
-        }
-    }
-// Query add user
+export const addUser = async (dataUser:NewUser):Promise<Validation> =>{
+    const result:Validation = await registerUser(dataUser)
+    return result 
+}
+export const userCompare = async(username:string, password:string):Promise<Validation | User> =>{
 
-return newUser //cambiamos y devolvemos el resultado de la query de tipo User
-}
-export const userCompare = (username:string, password:string):User =>{
-console.log('usuario comparado' + username + password)
-const userLoged = {
-    username:username,
-    password:password,
-    email:"dlaskda@gmail.com",
-    personalInfo:{
-        name:username,
-        age:18
+    const user = getUserByName(username)
+    if(password === (await user).password){
+        return (user)
     }
-}
-return (userLoged)
+    else return 'Error' 
 }
